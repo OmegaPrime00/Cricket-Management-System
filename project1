@@ -1,0 +1,917 @@
+Last login: Mon Mar 11 18:20:20 on console
+manjariiii@AJAYs-MacBook-Air ~ % /usr/local/mysql/bin/mysql -u root -p  
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.23 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> USE project;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> CREATE TABLE Team (
+    ->     TeamID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     TeamName VARCHAR(100),
+    ->     CaptainID INT,
+    ->     Coach VARCHAR(100),
+    ->     FoundedYear YEAR,
+    ->     HomeGround VARCHAR(100),
+    ->     FOREIGN KEY (CaptainID) REFERENCES Player(PlayerID)
+    -> );
+ERROR 1050 (42S01): Table 'team' already exists
+mysql> CREATE TABLE Team (
+    ->     TeamID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     TeamName VARCHAR(100),
+    ->     CaptainID INT,
+    ->     Coach VARCHAR(100),
+    ->     FoundedYear YEAR,
+    ->     HomeGround VARCHAR(100),
+    ->     FOREIGN KEY (CaptainID) REFERENCES Player(PlayerID)
+    -> );
+ERROR 1050 (42S01): Table 'team' already exists
+mysql> CREATE TABLE Teams (
+    ->     TeamID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     TeamName VARCHAR(100),
+    ->     CaptainID INT,
+    ->     Coach VARCHAR(100),
+    ->     FoundedYear YEAR,
+    ->     HomeGround VARCHAR(100),
+    ->     FOREIGN KEY (CaptainID) REFERENCES Player(PlayerID)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Teamss (
+    ->     TeamID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     TeamName VARCHAR(100),
+    ->     CaptainID INT,
+    ->     Coach VARCHAR(100),
+    ->     FoundedYear INT,
+    ->     HomeGround VARCHAR(100),
+    ->     FOREIGN KEY (CaptainID) REFERENCES Player(PlayerID)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO TeamsS (TeamName, CaptainID, Coach, FoundedYear, HomeGround)
+    -> VALUES
+    -> ('India', 1, 'Ravi Shastri', 1932, 'Wankhede Stadium'),
+    -> ('Australia', 3, 'Justin Langer', 1905, 'Melbourne Cricket Ground'),
+    -> ('New Zealand', 4, 'Gary Stead', 1926, 'Eden Park'),
+    -> ('England', 5, 'Chris Silverwood', 1877, 'Lord''s Cricket Ground'),
+    -> ('South Africa', NULL, 'Mark Boucher', 1889, 'Newlands');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> CREATE TABLE Matchs (
+    ->     MatchID INT AUTO_INCREMENT PRIMARY KEY,
+    ->     MatchDate DATE,
+    ->     Venue VARCHAR(100),
+    ->     HostTeamID INT,
+    ->     OpponentTeamID INT,
+    ->     Result VARCHAR(50),
+    ->     WinningTeamID INT,
+    ->     LosingTeamID INT,
+    ->     ManOfTheMatchID INT,
+    ->     FOREIGN KEY (HostTeamID) REFERENCES Team(TeamID),
+    ->     FOREIGN KEY (OpponentTeamID) REFERENCES Team(TeamID),
+    ->     FOREIGN KEY (WinningTeamID) REFERENCES Team(TeamID),
+    ->     FOREIGN KEY (LosingTeamID) REFERENCES Team(TeamID),
+    ->     FOREIGN KEY (ManOfTheMatchID) REFERENCES Player(PlayerID)
+    -> );
+ERROR 1050 (42S01): Table 'matchs' already exists
+mysql> INSERT INTO Matchs (MatchDate, Venue, HostTeamID, OpponentTeamID, Result, WinningTeamID, LosingTeamID, ManOfTheMatchID)
+    -> VALUES
+    -> ('2024-01-01', 'Eden Park', 3, 4, 'New Zealand won by 3 wickets', 3, 4, 4),
+    -> ('2024-02-14', 'Melbourne Cricket Ground', 2, 1, 'Australia won by 5 runs', 2, 1, 2),
+    -> ('2024-03-20', 'Wankhede Stadium', 1, 2, 'India won by 7 wickets', 1, 2, 1),
+    -> ('2024-04-05', 'Lord''s Cricket Ground', 5, 3, 'England won by 2 wickets', 5, 3, 5),
+    -> ('2024-05-10', 'Newlands', 6, 5, 'Match abandoned due to rain', NULL, NULL, NULL);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`project`.`matchs`, CONSTRAINT `matchs_ibfk_1` FOREIGN KEY (`HostTeamID`) REFERENCES `team` (`TeamID`))
+mysql> CREATE DATABASE project1;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> USE project1;
+Database changed
+mysql> -- TEAMS table
+mysql> CREATE TABLE Teams (
+    ->     Team_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Team_name VARCHAR(255),
+    ->     Home_city VARCHAR(255),
+    ->     Captain VARCHAR(255),
+    ->     Coach VARCHAR(255),
+    ->     Established_Year INT,
+    ->     No_of_batsmen INT,
+    ->     No_of_bowlers INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> -- MATCHES table
+mysql> CREATE TABLE Matches (
+    ->     Match_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Team_1_name VARCHAR(255),
+    ->     Team_2_name VARCHAR(255),
+    ->     Match_time TIME,
+    ->     Match_date DATE,
+    ->     Umpire_id INT,
+    ->     Stadium VARCHAR(255),
+    ->     Winner VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> -- PLAYERS table
+mysql> CREATE TABLE Players (
+    ->     Team_id INT,
+    ->     Player_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Player_name VARCHAR(255),
+    ->     Matches_played INT,
+    ->     Age INT,
+    ->     Role VARCHAR(255),
+    ->     Country VARCHAR(255),
+    ->     FOREIGN KEY (Team_id) REFERENCES Teams(Team_id)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> -- COACH table
+mysql> CREATE TABLE Coach (
+    ->     Coach_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Coach_name VARCHAR(255),
+    ->     Team_id INT,
+    ->     Country VARCHAR(255),
+    ->     Experience INT,
+    ->     FOREIGN KEY (Team_id) REFERENCES Teams(Team_id)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> -- CAPTAIN table
+mysql> CREATE TABLE Captain (
+    ->     Captain_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Captain_name VARCHAR(255),
+    ->     Team_id INT,
+    ->     Country VARCHAR(255),
+    ->     Matches_won INT,
+    ->     FOREIGN KEY (Team_id) REFERENCES Teams(Team_id)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> -- BATSMAN table
+mysql> CREATE TABLE Batsmen (
+    ->     Batsman_id INT PRIMARY KEY,
+    ->     Batsman_name VARCHAR(255),
+    ->     Team_name VARCHAR(255),
+    ->     Country VARCHAR(255),
+    ->     Age INT,
+    ->     Total_runs INT,
+    ->     Highest_score INT,
+    ->     FOREIGN KEY (Team_name) REFERENCES Teams(Team_name),
+    ->     FOREIGN KEY (Country) REFERENCES Teams(Country)
+    -> );
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'batsmen_ibfk_1' in the referenced table 'Teams'
+mysql> 
+mysql> CREATE TABLE Batsman(
+    ->     Batsman_id INT PRIMARY KEY,
+    ->     Batsman_name VARCHAR(255),
+    ->     Team_name VARCHAR(255),
+    ->     Country VARCHAR(255),
+    ->     Age INT,
+    ->     Total_runs INT,
+    ->     Highest_score INT
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE Bowlers (
+    ->     Bowler_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Bowler_name VARCHAR(255),
+    ->     Team_name VARCHAR(255),
+    ->     Country VARCHAR(255),
+    ->     Age INT,
+    ->     Wickets_taken INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Umpire (
+    ->     Umpire_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Umpire_name VARCHAR(255),
+    ->     Matches_officiated INT,
+    ->     Country VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE Stadium (
+    ->     Stadium_name VARCHAR(255) PRIMARY KEY,
+    ->     Capacity INT,
+    ->     City VARCHAR(255),
+    ->     Country VARCHAR(255),
+    ->     Year_established INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Staff (
+    ->     Staff_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Staff_role VARCHAR(255),
+    ->     Staff_name VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO Teams (Team_name, Home_city, Captain, Coach, Established_Year, No_of_batsmen, No_of_bowlers) VALUES
+    -> ('India', 'Mumbai', 'Virat Kohli', 'Ravi Shastri', 1932, 7, 7),
+    -> ('Australia', 'Sydney', 'Aaron Finch', 'Justin Langer', 1877, 7, 7),
+    -> ('England', 'London', 'Joe Root', 'Chris Silverwood', 1877, 7, 7),
+    -> ('South Africa', 'Johannesburg', 'Quinton de Kock', 'Mark Boucher', 1889, 7, 7),
+    -> ('Pakistan', 'Karachi', 'Babar Azam', 'Misbah-ul-Haq', 1952, 7, 7),
+    -> ('West Indies', 'Kingston', 'Kieron Pollard', 'Phil Simmons', 1928, 7, 7),
+    -> ('New Zealand', 'Auckland', 'Kane Williamson', 'Gary Stead', 1930, 7, 7), 
+    -> ('Sri Lanka', 'Colombo', 'Dimuth Karunaratne', 'Mickey Arthur', 1981, 7, 7),
+    -> ('Bangladesh', 'Dhaka', 'Mominul Haque', 'Russell Domingo', 2000, 7, 7),
+    -> ('Afghanistan', 'Kabul', 'Asghar Afghan', 'Lance Klusener', 2001, 7, 7),
+    -> ('Ireland', 'Dublin', 'Andrew Balbirnie', 'Graham Ford', 1855, 7, 7),
+    -> ('Zimbabwe', 'Harare', 'Sean Williams', 'Lalchand Rajput', 1980, 7, 7),
+    -> ('Netherlands', 'Amsterdam', 'Pieter Seelaar', 'Ryan Campbell', 1864, 7, 7),
+    -> ('Scotland', 'Edinburgh', 'Kyle Coetzer', 'Shane Burger', 1865, 7, 7),
+    -> ('Oman', 'Muscat', 'Zeeshan Maqsood', 'Duleep Mendis', 1974, 7, 7);
+Query OK, 15 rows affected (0.02 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO Matches (Team_1_name, Team_2_name, Match_time, Match_date, Umpire_id, Stadium, Winner) VALUES
+    -> ('India', 'Australia', '15:00', '2024-06-01', 101, 'Melbourne Cricket Ground', 'India'),
+    -> ('England', 'South Africa', '14:30', '2024-06-03', 102, 'Lord''s Cricket Ground', 'England'),
+    -> ('Pakistan', 'New Zealand', '16:00', '2024-06-05', 103, 'Gaddafi Stadium', 'New Zealand'),
+    -> ('West Indies', 'Sri Lanka', '15:30', '2024-06-07', 104, 'Kensington Oval', 'West Indies'),
+    -> ('Bangladesh', 'Afghanistan', '16:30', '2024-06-09', 105, 'Sher-e-Bangla National Cricket Stadium', 'Afghanistan'),
+    -> ('Ireland', 'Zimbabwe', '14:00', '2024-06-11', 106, 'Harare Sports Club', 'Ireland'),
+    -> ('Netherlands', 'Scotland', '16:00', '2024-06-13', 107, 'VRA Cricket Ground', 'Netherlands'),
+    -> ('Oman', 'Papua New Guinea', '15:00', '2024-06-15', 108, 'Al Amerat Cricket Stadium', 'Oman'),
+    -> ('India', 'England', '14:30', '2024-06-17', 109, 'Eden Gardens', 'India'),
+    -> ('Australia', 'South Africa', '16:00', '2024-06-19', 110, 'Sydney Cricket Ground', 'South Africa'),
+    -> ('India', 'West Indies', '15:30', '2024-06-21', 111, 'Wankhede Stadium', 'India'),
+    -> ('Australia', 'Pakistan', '15:00', '2024-06-23', 112, 'Adelaide Oval', 'Australia'),
+    -> ('England', 'New Zealand', '14:30', '2024-06-25', 113, 'Old Trafford', 'England'),
+    -> ('Sri Lanka', 'Bangladesh', '16:00', '2024-06-27', 114, 'R. Premadasa Stadium', 'Sri Lanka'),
+    -> ('South Africa', 'Afghanistan', '15:30', '2024-06-29', 115, 'SuperSport Park', 'South Africa');
+Query OK, 15 rows affected (0.01 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Players (Team_id, Player_id, Player_name, Matches_played, Age, Role, Country)
+    -> VALUES
+    -> (1, 1, 'Virat Kohli', 250, 33, 'Batsman', 'India'),
+    -> (1, 2, 'Rohit Sharma', 240, 34, 'Batsman', 'India'),
+    -> (1, 3, 'Jasprit Bumrah', 150, 28, 'Bowler', 'India'),
+    -> (2, 4, 'Steve Smith', 230, 32, 'Batsman', 'Australia'),
+    -> (2, 5, 'David Warner', 220, 35, 'Batsman', 'Australia'),
+    -> (2, 6, 'Pat Cummins', 140, 29, 'Bowler', 'Australia'),
+    -> (3, 7, 'Joe Root', 200, 30, 'Batsman', 'England'),
+    -> (3, 8, 'Ben Stokes', 180, 30, 'All-rounder', 'England'),
+    -> (3, 9, 'Jofra Archer', 120, 27, 'Bowler', 'England'),
+    -> (4, 10, 'Quinton de Kock', 220, 29, 'Batsman', 'South Africa'),
+    -> (4, 11, 'Kagiso Rabada', 180, 26, 'Bowler', 'South Africa'),
+    -> (4, 12, 'Faf du Plessis', 210, 37, 'Batsman', 'South Africa'),
+    -> (5, 13, 'Babar Azam', 200, 26, 'Batsman', 'Pakistan'),
+    -> (5, 14, 'Shaheen Afridi', 130, 21, 'Bowler', 'Pakistan'),
+    -> (5, 15, 'Mohammad Rizwan', 150, 29, 'Batsman', 'Pakistan');
+Query OK, 15 rows affected (0.01 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Coach (Coach_id, Coach_name, Team_id, Country, Experience)
+    -> VALUES
+    -> (1, 'Ravi Shastri', 1, 'India', 25),
+    -> (2, 'Justin Langer', 2, 'Australia', 20),
+    -> (3, 'Chris Silverwood', 3, 'England', 15),
+    -> (4, 'Mark Boucher', 4, 'South Africa', 10),
+    -> (5, 'Misbah-ul-Haq', 5, 'Pakistan', 5),
+    -> (6, 'Phil Simmons', 6, 'West Indies', 12),
+    -> (7, 'Gary Stead', 7, 'New Zealand', 8),
+    -> (8, 'Mickey Arthur', 8, 'Sri Lanka', 18),
+    -> (9, 'Russell Domingo', 9, 'Bangladesh', 7),
+    -> (10, 'Lance Klusener', 10, 'Afghanistan', 6),
+    -> (11, 'Graham Ford', 11, 'Ireland', 15),
+    -> (12, 'Lalchand Rajput', 12, 'Zimbabwe', 10),
+    -> (13, 'Ryan Campbell', 13, 'Netherlands', 5),
+    -> (14, 'Shane Burger', 14, 'Scotland', 8),
+    -> (15, 'Duleep Mendis', 15, 'Oman', 10);
+Query OK, 15 rows affected (0.01 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO Captain (Captain_id, Captain_name, Team_id, Country, Matches_won)
+    -> VALUES
+    -> (1, 'Virat Kohli', 1, 'India', 130),
+    -> (2, 'Aaron Finch', 2, 'Australia', 110),
+    -> (3, 'Joe Root', 3, 'England', 120),
+    -> (4, 'Quinton de Kock', 4, 'South Africa', 100),
+    -> (5, 'Babar Azam', 5, 'Pakistan', 90),
+    -> (6, 'Kieron Pollard', 6, 'West Indies', 85),
+    -> (7, 'Kane Williamson', 7, 'New Zealand', 95),
+    -> (8, 'Dimuth Karunaratne', 8, 'Sri Lanka', 80),
+    -> (9, 'Mominul Haque', 9, 'Bangladesh', 75),
+    -> (10, 'Asghar Afghan', 10, 'Afghanistan', 70),
+    -> (11, 'Andrew Balbirnie', 11, 'Ireland', 65),
+    -> (12, 'Sean Williams', 12, 'Zimbabwe', 60),
+    -> (13, 'Pieter Seelaar', 13, 'Netherlands', 55),
+    -> (14, 'Kyle Coetzer', 14, 'Scotland', 50),
+    -> (15, 'Zeeshan Maqsood', 15, 'Oman', 45);
+Query OK, 15 rows affected (0.00 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO Batsmen (Batsman_id, Batsman_name, Player_id, Team_id, Country, Age, Total_runs, Highest_score) VALUES
+    -> (1, 'Virat Kohli', 1, 1, 'India', 33, 12000, 254),
+    -> (2, 'Rohit Sharma', 2, 1, 'India', 34, 12500, 264),
+    -> (3, 'Joe Root', 7, 3, 'England', 30, 9500, 254),
+    -> (4, 'Steve Smith', 4, 2, 'Australia', 32, 11500, 335),
+    -> (5, 'Quinton de Kock', 6, 4, 'South Africa', 29, 8500, 178),
+    -> (6, 'Babar Azam', 13, 5, 'Pakistan', 26, 7800, 165),
+    -> (7, 'Kane Williamson', 7, 7, 'New Zealand', 31, 9000, 199),
+    -> (8, 'Dimuth Karunaratne', 8, 8, 'Sri Lanka', 33, 6700, 156),
+    -> (9, 'Andrew Balbirnie', 11, 11, 'Ireland', 32, 5800, 143),
+    -> (10, 'Sean Williams', 12, 12, 'Zimbabwe', 34, 6200, 169),
+    -> (11, 'Pieter Seelaar', 13, 13, 'Netherlands', 35, 4200, 132),
+    -> (12, 'Kyle Coetzer', 14, 14, 'Scotland', 37, 3800, 129),
+    -> (13, 'Zeeshan Maqsood', 15, 15, 'Oman', 31, 2900, 114),
+    -> (14, 'Aaron Finch', 3, 2, 'Australia', 34, 11000, 239),
+    -> (15, 'Mominul Haque', 9, 9, 'Bangladesh', 30, 4500, 125);
+ERROR 1146 (42S02): Table 'project1.batsmen' doesn't exist
+mysql> 
+mysql> INSERT INTO Batsman (Batsman_id, Batsman_name, Player_id, Team_id, Country, Age, Total_runs, Highest_score) VALUES
+    -> (1, 'Virat Kohli', 1, 1, 'India', 33, 12000, 254),
+    -> (2, 'Rohit Sharma', 2, 1, 'India', 34, 12500, 264),
+    -> (3, 'Joe Root', 7, 3, 'England', 30, 9500, 254),
+    -> (4, 'Steve Smith', 4, 2, 'Australia', 32, 11500, 335),
+    -> (5, 'Quinton de Kock', 6, 4, 'South Africa', 29, 8500, 178),
+    -> (6, 'Babar Azam', 13, 5, 'Pakistan', 26, 7800, 165),
+    -> (7, 'Kane Williamson', 7, 7, 'New Zealand', 31, 9000, 199),
+    -> (8, 'Dimuth Karunaratne', 8, 8, 'Sri Lanka', 33, 6700, 156),
+    -> (9, 'Andrew Balbirnie', 11, 11, 'Ireland', 32, 5800, 143),
+    -> (10, 'Sean Williams', 12, 12, 'Zimbabwe', 34, 6200, 169),
+    -> (11, 'Pieter Seelaar', 13, 13, 'Netherlands', 35, 4200, 132),
+    -> (12, 'Kyle Coetzer', 14, 14, 'Scotland', 37, 3800, 129),
+    -> (13, 'Zeeshan Maqsood', 15, 15, 'Oman', 31, 2900, 114),
+    -> (14, 'Aaron Finch', 3, 2, 'Australia', 34, 11000, 239),
+    -> (15, 'Mominul Haque', 9, 9, 'Bangladesh', 30, 4500, 125);
+ERROR 1054 (42S22): Unknown column 'Player_id' in 'field list'
+mysql> DROP table Batsman;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE Batsmen (
+    ->     Batsman_id INT PRIMARY KEY,
+    ->     Batsman_name VARCHAR(255),
+    ->     Player_id int,
+    ->     Team_id int,
+    ->     Country VARCHAR(255),
+    ->     Age INT,
+    ->     Total_runs INT,
+    ->     Highest_score INT
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO Batsman (Batsman_id, Batsman_name, Player_id, Team_id, Country, Age, Total_runs, Highest_score) VALUES
+    -> (1, 'Virat Kohli', 1, 1, 'India', 33, 12000, 254),
+    -> (2, 'Rohit Sharma', 2, 1, 'India', 34, 12500, 264),
+    -> (3, 'Joe Root', 7, 3, 'England', 30, 9500, 254),
+    -> (4, 'Steve Smith', 4, 2, 'Australia', 32, 11500, 335),
+    -> (5, 'Quinton de Kock', 6, 4, 'South Africa', 29, 8500, 178),
+    -> (6, 'Babar Azam', 13, 5, 'Pakistan', 26, 7800, 165),
+    -> (7, 'Kane Williamson', 7, 7, 'New Zealand', 31, 9000, 199),
+    -> (8, 'Dimuth Karunaratne', 8, 8, 'Sri Lanka', 33, 6700, 156),
+    -> (9, 'Andrew Balbirnie', 11, 11, 'Ireland', 32, 5800, 143),
+    -> (10, 'Sean Williams', 12, 12, 'Zimbabwe', 34, 6200, 169),
+    -> (11, 'Pieter Seelaar', 13, 13, 'Netherlands', 35, 4200, 132),
+    -> (12, 'Kyle Coetzer', 14, 14, 'Scotland', 37, 3800, 129),
+    -> (13, 'Zeeshan Maqsood', 15, 15, 'Oman', 31, 2900, 114),
+    -> (14, 'Aaron Finch', 3, 2, 'Australia', 34, 11000, 239),
+    -> (15, 'Mominul Haque', 9, 9, 'Bangladesh', 30, 4500, 125);
+ERROR 1146 (42S02): Table 'project1.batsman' doesn't exist
+mysql> INSERT INTO Batsmen (Batsman_id, Batsman_name, Player_id, Team_id, Country, Age, Total_runs, Highest_score) VALUES
+    -> (1, 'Virat Kohli', 1, 1, 'India', 33, 12000, 254),
+    -> (2, 'Rohit Sharma', 2, 1, 'India', 34, 12500, 264),
+    -> (3, 'Joe Root', 7, 3, 'England', 30, 9500, 254),
+    -> (4, 'Steve Smith', 4, 2, 'Australia', 32, 11500, 335),
+    -> (5, 'Quinton de Kock', 6, 4, 'South Africa', 29, 8500, 178),
+    -> (6, 'Babar Azam', 13, 5, 'Pakistan', 26, 7800, 165),
+    -> (7, 'Kane Williamson', 7, 7, 'New Zealand', 31, 9000, 199),
+    -> (8, 'Dimuth Karunaratne', 8, 8, 'Sri Lanka', 33, 6700, 156),
+    -> (9, 'Andrew Balbirnie', 11, 11, 'Ireland', 32, 5800, 143),
+    -> (10, 'Sean Williams', 12, 12, 'Zimbabwe', 34, 6200, 169),
+    -> (11, 'Pieter Seelaar', 13, 13, 'Netherlands', 35, 4200, 132),
+    -> (12, 'Kyle Coetzer', 14, 14, 'Scotland', 37, 3800, 129),
+    -> (13, 'Zeeshan Maqsood', 15, 15, 'Oman', 31, 2900, 114),
+    -> (14, 'Aaron Finch', 3, 2, 'Australia', 34, 11000, 239),
+    -> (15, 'Mominul Haque', 9, 9, 'Bangladesh', 30, 4500, 125);
+Query OK, 15 rows affected (0.00 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Bowlers (Bowler_name, Team_name, Country, Age, Wickets_taken) 
+    -> VALUES ('Jasprit Bumrah', 'Mumbai Indians', 'India', 28, 250),(‘Kagiso Rabada’, ‘Australia’, ‘Australia’,27,140),(‘Jofra Archer’,’England’,’England’,30,200),(‘Ravichandra Ashwin’,’India’,’India’,28,240),(‘Rashid Khan’,’Afghanistan’,’Afghanistan’, 30,190),(‘Moeen Ali’,’England’,’England’,30,200),(‘Nathan Lyon’,’Australia’,’Australia’,29,160),(‘Shaheen Afridi’,’Pakistan’,’Pakistan’,31,215),(‘Mitchell Starc’,’Australia’,’Australia’,32,180),(‘Anrich Nortje’,’South Africa’,’South Africa’,30,200),(‘Mark Wood’,’England’,’England’,33,200),(‘Lockie Ferguson’, ‘New Zealand’,’New Zealand’,30,210);(‘Yasir Shah’,’Pakistan’,’Pakistan’,31,240);(‘Adam Zampa’,’Australia’,’Australia’,29,230);(‘Jack Leach’,’England’,’England’,32,200);(‘Mohammed Shami’, ‘India’,’India’,34,280);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Rabada’, ‘Australia’, ‘Australia’,27,140),(‘Jofra Archer’,’Engla' at line 2
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '‘Yasir Shah’,’Pakistan’,’Pakistan’,31,240)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '‘Adam Zampa’,’Australia’,’Australia’,29,230)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '‘Jack Leach’,’England’,’England’,32,200)' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '‘Mohammed Shami’, ‘India’,’India’,34,280)' at line 1
+mysql> INSERT INTO Bowlers (Bowler_name, Team_name, Country, Age, Wickets_taken) 
+    -> VALUES 
+    -> ('Jasprit Bumrah', 'Mumbai Indians', 'India', 28, 250),
+    -> ('Kagiso Rabada', 'Australia', 'Australia', 27, 140),
+    -> ('Jofra Archer', 'England', 'England', 30, 200),
+    -> ('Ravichandra Ashwin', 'India', 'India', 28, 240),
+    -> ('Rashid Khan', 'Afghanistan', 'Afghanistan', 30, 190),
+    -> ('Moeen Ali', 'England', 'England', 30, 200),
+    -> ('Nathan Lyon', 'Australia', 'Australia', 29, 160),
+    -> ('Shaheen Afridi', 'Pakistan', 'Pakistan', 31, 215),
+    -> ('Mitchell Starc', 'Australia', 'Australia', 32, 180),
+    -> ('Anrich Nortje', 'South Africa', 'South Africa', 30, 200),
+    -> ('Mark Wood', 'England', 'England', 33, 200),
+    -> ('Lockie Ferguson', 'New Zealand', 'New Zealand', 30, 210),
+    -> ('Yasir Shah', 'Pakistan', 'Pakistan', 31, 240),
+    -> ('Adam Zampa', 'Australia', 'Australia', 29, 230),
+    -> ('Jack Leach', 'England', 'England', 32, 200),
+    -> ('Mohammed Shami', 'India', 'India', 34, 280);
+Query OK, 16 rows affected (0.01 sec)
+Records: 16  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Umpire (Umpire_id, Umpire_name, Matches_officiated, Country)
+    -> VALUES
+    -> (1, 'Aleem Dar', 200, 'Pakistan'),
+    -> (2, 'Ian Gould', 180, 'England'),
+    -> (3, 'Marais Erasmus', 220, 'South Africa'),
+    -> (4, 'Kumar Dharmasena', 190, 'Sri Lanka'),
+    -> (5, 'Richard Illingworth', 170, 'England'),
+    -> (6, 'Nigel Llong', 210, 'England'),
+    -> (7, 'Joel Wilson', 160, 'West Indies'),
+    -> (8, 'Paul Reiffel', 175, 'Australia'),
+    -> (9, 'Rod Tucker', 185, 'Australia'),
+    -> (10, 'Bruce Oxenford', 195, 'Australia'),
+    -> (11, 'Michael Gough', 205, 'England'),
+    -> (12, 'Chris Gaffaney', 225, 'New Zealand'),
+    -> (13, 'Anil Chaudhary', 155, 'India'),
+    -> (14, 'Nitin Menon', 165, 'India'),
+    -> (15, 'Paul Wilson', 235, 'Australia');
+Query OK, 15 rows affected (0.01 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Stadium (Stadium_name, Capacity, City, Country, Year_established)
+    -> VALUES
+    -> ('Melbourne Cricket Ground', 100000, 'Melbourne', 'Australia', 1853),
+    -> ('Lord''s Cricket Ground', 30000, 'London', 'England', 1814),
+    -> ('Eden Gardens', 68000, 'Kolkata', 'India', 1864),
+    -> ('Wankhede Stadium', 33000, 'Mumbai', 'India', 1974),
+    -> ('Sydney Cricket Ground', 48000, 'Sydney', 'Australia', 1848),
+    -> ('The Oval', 23500, 'London', 'England', 1845),
+    -> ('Old Trafford', 26000, 'Manchester', 'England', 1857),
+    -> ('Newlands Cricket Ground', 25000, 'Cape Town', 'South Africa', 1888),
+    -> ('Gaddafi Stadium', 27000, 'Lahore', 'Pakistan', 1959),
+    -> ('R. Premadasa Stadium', 35000, 'Colombo', 'Sri Lanka', 1986),
+    -> ('Dubai International Cricket Stadium', 25000, 'Dubai', 'UAE', 2009),
+    -> ('Adelaide Oval', 53000, 'Adelaide', 'Australia', 1871),
+    -> ('SuperSport Park', 22000, 'Centurion', 'South Africa', 1986),
+    -> ('Sharjah Cricket Stadium', 16000, 'Sharjah', 'UAE', 1982),
+    -> ('Chinnaswamy Stadium', 38000, 'Bangalore', 'India', 1969);
+Query OK, 15 rows affected (0.00 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Staff (Staff_id, Staff_role, Staff_name)
+    -> VALUES
+    -> (1, 'Manager', 'John Smith'),
+    -> (2, 'Physiotherapist', 'Emily Johnson'),
+    -> (3, 'Fitness Trainer', 'David Brown'),
+    -> (4, 'Team Analyst', 'Lisa Wilson'),
+    -> (5, 'Logistics Coordinator', 'Michael Clark'),
+    -> (6, 'Groundskeeper', 'Peter Davis'),
+    -> (7, 'Team Chef', 'Sarah Taylor'),
+    -> (8, 'Media Manager', 'Ryan Evans'),
+    -> (9, 'Security Officer', 'Matthew Harris'),
+    -> (10, 'Equipment Manager', 'Laura Martinez'),
+    -> (11, 'Scorer', 'Andrew Thompson'),
+    -> (12, 'Team Doctor', 'Michelle Lee'),
+    -> (13, 'Statistician', 'Daniel White'),
+    -> (14, 'Video Analyst', 'Jessica Garcia'),
+    -> (15, 'Driver', 'Thomas Robinson');
+Query OK, 15 rows affected (0.00 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> SELECT Team_name, MIN(Age) AS Youngest_Player_Age
+    -> FROM Players p
+    -> JOIN Teams t ON p.Team_id = t.Team_id
+    -> GROUP BY Team_name;
++--------------+---------------------+
+| Team_name    | Youngest_Player_Age |
++--------------+---------------------+
+| India        |                  28 |
+| Australia    |                  29 |
+| England      |                  27 |
+| South Africa |                  26 |
+| Pakistan     |                  21 |
++--------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT m.*
+    -> FROM Matches m
+    -> JOIN Teams t1 ON m.Team_1_name = t1.Team_name
+    -> JOIN Teams t2 ON m.Team_2_name = t2.Team_name
+    -> WHERE t1.Total_runs > t2.Total_runs AND m.Winner IS NOT NULL;
+ERROR 1054 (42S22): Unknown column 't1.Total_runs' in 'where clause'
+mysql> 
+mysql> SELECT Player_name, Total_runs
+    -> FROM Batsmen
+    -> WHERE Total_runs > 5000;
+ERROR 1054 (42S22): Unknown column 'Player_name' in 'field list'
+mysql> SELECT Team_id, COUNT(*) AS Total_players FROM Players GROUP BY Team_id;
++---------+---------------+
+| Team_id | Total_players |
++---------+---------------+
+|       1 |             3 |
+|       2 |             3 |
+|       3 |             3 |
+|       4 |             3 |
+|       5 |             3 |
++---------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Batsman_name, Total_runs
+    -> FROM Batsman
+    -> WHERE Total_runs > 5000;
+ERROR 1146 (42S02): Table 'project1.batsman' doesn't exist
+mysql>   DELETE FROM Players WHERE Player_name = 'Mominul Haque';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM Players;
++---------+-----------+-----------------+----------------+------+-------------+--------------+
+| Team_id | Player_id | Player_name     | Matches_played | Age  | Role        | Country      |
++---------+-----------+-----------------+----------------+------+-------------+--------------+
+|       1 |         1 | Virat Kohli     |            250 |   33 | Batsman     | India        |
+|       1 |         2 | Rohit Sharma    |            240 |   34 | Batsman     | India        |
+|       1 |         3 | Jasprit Bumrah  |            150 |   28 | Bowler      | India        |
+|       2 |         4 | Steve Smith     |            230 |   32 | Batsman     | Australia    |
+|       2 |         5 | David Warner    |            220 |   35 | Batsman     | Australia    |
+|       2 |         6 | Pat Cummins     |            140 |   29 | Bowler      | Australia    |
+|       3 |         7 | Joe Root        |            200 |   30 | Batsman     | England      |
+|       3 |         8 | Ben Stokes      |            180 |   30 | All-rounder | England      |
+|       3 |         9 | Jofra Archer    |            120 |   27 | Bowler      | England      |
+|       4 |        10 | Quinton de Kock |            220 |   29 | Batsman     | South Africa |
+|       4 |        11 | Kagiso Rabada   |            180 |   26 | Bowler      | South Africa |
+|       4 |        12 | Faf du Plessis  |            210 |   37 | Batsman     | South Africa |
+|       5 |        13 | Babar Azam      |            200 |   26 | Batsman     | Pakistan     |
+|       5 |        14 | Shaheen Afridi  |            130 |   21 | Bowler      | Pakistan     |
+|       5 |        15 | Mohammad Rizwan |            150 |   29 | Batsman     | Pakistan     |
++---------+-----------+-----------------+----------------+------+-------------+--------------+
+15 rows in set (0.00 sec)
+
+mysql> DELETE FROM Players WHERE Player_name = ‘Pat Cumins’;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Cumins’' at line 1
+mysql> DELETE FROM Players WHERE Player_name = 'Pat Cummins';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM Players;
++---------+-----------+-----------------+----------------+------+-------------+--------------+
+| Team_id | Player_id | Player_name     | Matches_played | Age  | Role        | Country      |
++---------+-----------+-----------------+----------------+------+-------------+--------------+
+|       1 |         1 | Virat Kohli     |            250 |   33 | Batsman     | India        |
+|       1 |         2 | Rohit Sharma    |            240 |   34 | Batsman     | India        |
+|       1 |         3 | Jasprit Bumrah  |            150 |   28 | Bowler      | India        |
+|       2 |         4 | Steve Smith     |            230 |   32 | Batsman     | Australia    |
+|       2 |         5 | David Warner    |            220 |   35 | Batsman     | Australia    |
+|       3 |         7 | Joe Root        |            200 |   30 | Batsman     | England      |
+|       3 |         8 | Ben Stokes      |            180 |   30 | All-rounder | England      |
+|       3 |         9 | Jofra Archer    |            120 |   27 | Bowler      | England      |
+|       4 |        10 | Quinton de Kock |            220 |   29 | Batsman     | South Africa |
+|       4 |        11 | Kagiso Rabada   |            180 |   26 | Bowler      | South Africa |
+|       4 |        12 | Faf du Plessis  |            210 |   37 | Batsman     | South Africa |
+|       5 |        13 | Babar Azam      |            200 |   26 | Batsman     | Pakistan     |
+|       5 |        14 | Shaheen Afridi  |            130 |   21 | Bowler      | Pakistan     |
+|       5 |        15 | Mohammad Rizwan |            150 |   29 | Batsman     | Pakistan     |
++---------+-----------+-----------------+----------------+------+-------------+--------------+
+14 rows in set (0.00 sec)
+
+mysql> SELECT Team_name, COUNT(*) AS Total_players FROM Players GROUP BY Team_name;
+ERROR 1054 (42S22): Unknown column 'Team_name' in 'field list'
+mysql>   SELECT Team_name, COUNT(*) AS Matches_won FROM Matches WHERE Winner = Team_name GROUP BY Team_name;
+ERROR 1054 (42S22): Unknown column 'Team_name' in 'field list'
+mysql> SELECT Umpire_name, Matches_officiated
+    -> FROM Umpire
+    -> ORDER BY Matches_officiated DESC;
++---------------------+--------------------+
+| Umpire_name         | Matches_officiated |
++---------------------+--------------------+
+| Paul Wilson         |                235 |
+| Chris Gaffaney      |                225 |
+| Marais Erasmus      |                220 |
+| Nigel Llong         |                210 |
+| Michael Gough       |                205 |
+| Aleem Dar           |                200 |
+| Bruce Oxenford      |                195 |
+| Kumar Dharmasena    |                190 |
+| Rod Tucker          |                185 |
+| Ian Gould           |                180 |
+| Paul Reiffel        |                175 |
+| Richard Illingworth |                170 |
+| Nitin Menon         |                165 |
+| Joel Wilson         |                160 |
+| Anil Chaudhary      |                155 |
++---------------------+--------------------+
+15 rows in set (0.00 sec)
+
+mysql> SELECT Player_name, Highest_score
+    -> FROM Batsmen
+    -> ORDER BY Highest_score DESC
+    -> LIMIT 1;
+ERROR 1054 (42S22): Unknown column 'Player_name' in 'field list'
+mysql> SELECT Team_name, MIN(Age) AS Youngest_Player_Age
+    -> FROM Players p
+    -> JOIN Teams t ON p.Team_id = t.Team_id
+    -> GROUP BY Team_name;
++--------------+---------------------+
+| Team_name    | Youngest_Player_Age |
++--------------+---------------------+
+| India        |                  28 |
+| Australia    |                  32 |
+| England      |                  27 |
+| South Africa |                  26 |
+| Pakistan     |                  21 |
++--------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql>   UPDATE Coach SET Experience = Experience + 2 WHERE Coach_name = 'Graham Ford';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '  UPDATE Coach SET Experience = Experience + 2 WHERE Coach_name = 'Graham Ford' at line 1
+mysql>    SELECT MAX(Wickets_taken) AS Max_wickets FROM Bowlers;
++-------------+
+| Max_wickets |
++-------------+
+|         280 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql>    SELECT AVG(Age) AS Avg_age FROM Players;
++---------+
+| Avg_age |
++---------+
+| 29.7857 |
++---------+
+1 row in set (0.01 sec)
+
+mysql> SELECT Player_name
+    -> FROM Players
+    -> WHERE Team_id IN (SELECT DISTINCT Team_id FROM Matches);
++-----------------+
+| Player_name     |
++-----------------+
+| Virat Kohli     |
+| Rohit Sharma    |
+| Jasprit Bumrah  |
+| Steve Smith     |
+| David Warner    |
+| Joe Root        |
+| Ben Stokes      |
+| Jofra Archer    |
+| Quinton de Kock |
+| Kagiso Rabada   |
+| Faf du Plessis  |
+| Babar Azam      |
+| Shaheen Afridi  |
+| Mohammad Rizwan |
++-----------------+
+14 rows in set (0.00 sec)
+
+mysql> SELECT Player_name, Total_runs
+    -> FROM Batsmen
+    -> WHERE Total_runs > 5000;
+ERROR 1054 (42S22): Unknown column 'Player_name' in 'field list'
+mysql> SELECT Batsman_name, Total_runs
+    -> FROM Batsmen
+    -> WHERE Total_runs > 5000;
++--------------------+------------+
+| Batsman_name       | Total_runs |
++--------------------+------------+
+| Virat Kohli        |      12000 |
+| Rohit Sharma       |      12500 |
+| Joe Root           |       9500 |
+| Steve Smith        |      11500 |
+| Quinton de Kock    |       8500 |
+| Babar Azam         |       7800 |
+| Kane Williamson    |       9000 |
+| Dimuth Karunaratne |       6700 |
+| Andrew Balbirnie   |       5800 |
+| Sean Williams      |       6200 |
+| Aaron Finch        |      11000 |
++--------------------+------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT Match_id, Team_1_name AS Team, Stadium
+    -> FROM Matches
+    -> UNION
+    -> SELECT Match_id, Team_2_name AS Team, Stadium
+    -> FROM Matches;
++----------+------------------+----------------------------------------+
+| Match_id | Team             | Stadium                                |
++----------+------------------+----------------------------------------+
+|        1 | India            | Melbourne Cricket Ground               |
+|        2 | England          | Lord's Cricket Ground                  |
+|        3 | Pakistan         | Gaddafi Stadium                        |
+|        4 | West Indies      | Kensington Oval                        |
+|        5 | Bangladesh       | Sher-e-Bangla National Cricket Stadium |
+|        6 | Ireland          | Harare Sports Club                     |
+|        7 | Netherlands      | VRA Cricket Ground                     |
+|        8 | Oman             | Al Amerat Cricket Stadium              |
+|        9 | India            | Eden Gardens                           |
+|       10 | Australia        | Sydney Cricket Ground                  |
+|       11 | India            | Wankhede Stadium                       |
+|       12 | Australia        | Adelaide Oval                          |
+|       13 | England          | Old Trafford                           |
+|       14 | Sri Lanka        | R. Premadasa Stadium                   |
+|       15 | South Africa     | SuperSport Park                        |
+|        1 | Australia        | Melbourne Cricket Ground               |
+|        2 | South Africa     | Lord's Cricket Ground                  |
+|        3 | New Zealand      | Gaddafi Stadium                        |
+|        4 | Sri Lanka        | Kensington Oval                        |
+|        5 | Afghanistan      | Sher-e-Bangla National Cricket Stadium |
+|        6 | Zimbabwe         | Harare Sports Club                     |
+|        7 | Scotland         | VRA Cricket Ground                     |
+|        8 | Papua New Guinea | Al Amerat Cricket Stadium              |
+|        9 | England          | Eden Gardens                           |
+|       10 | South Africa     | Sydney Cricket Ground                  |
+|       11 | West Indies      | Wankhede Stadium                       |
+|       12 | Pakistan         | Adelaide Oval                          |
+|       13 | New Zealand      | Old Trafford                           |
+|       14 | Bangladesh       | R. Premadasa Stadium                   |
+|       15 | Afghanistan      | SuperSport Park                        |
++----------+------------------+----------------------------------------+
+30 rows in set (0.00 sec)
+
+mysql> -- Get a combined list of coaches and captains with their names and teams
+mysql> SELECT Coach_name, 'Coach' AS Role, Team_name AS Team
+    -> FROM Coach
+    -> UNION
+    -> SELECT Captain_name, 'Captain' AS Role, Team_name AS Team
+    -> FROM Captain;
+ERROR 1054 (42S22): Unknown column 'Team_name' in 'field list'
+mysql> SELECT Player_name, 'Player' AS Role
+    -> FROM Players
+    -> UNION
+    -> SELECT Staff_name, Staff_role AS Role
+    -> FROM Staff;
++-----------------+-----------------------+
+| Player_name     | Role                  |
++-----------------+-----------------------+
+| Virat Kohli     | Player                |
+| Rohit Sharma    | Player                |
+| Jasprit Bumrah  | Player                |
+| Steve Smith     | Player                |
+| David Warner    | Player                |
+| Joe Root        | Player                |
+| Ben Stokes      | Player                |
+| Jofra Archer    | Player                |
+| Quinton de Kock | Player                |
+| Kagiso Rabada   | Player                |
+| Faf du Plessis  | Player                |
+| Babar Azam      | Player                |
+| Shaheen Afridi  | Player                |
+| Mohammad Rizwan | Player                |
+| John Smith      | Manager               |
+| Emily Johnson   | Physiotherapist       |
+| David Brown     | Fitness Trainer       |
+| Lisa Wilson     | Team Analyst          |
+| Michael Clark   | Logistics Coordinator |
+| Peter Davis     | Groundskeeper         |
+| Sarah Taylor    | Team Chef             |
+| Ryan Evans      | Media Manager         |
+| Matthew Harris  | Security Officer      |
+| Laura Martinez  | Equipment Manager     |
+| Andrew Thompson | Scorer                |
+| Michelle Lee    | Team Doctor           |
+| Daniel White    | Statistician          |
+| Jessica Garcia  | Video Analyst         |
+| Thomas Robinson | Driver                |
++-----------------+-----------------------+
+29 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Players
+    -> ADD CONSTRAINT fk_team_id
+    -> FOREIGN KEY (Team_id) REFERENCES Teams(Team_id);
+Query OK, 14 rows affected (0.09 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Players;
++---------+-----------+-----------------+----------------+------+-------------+--------------+
+| Team_id | Player_id | Player_name     | Matches_played | Age  | Role        | Country      |
++---------+-----------+-----------------+----------------+------+-------------+--------------+
+|       1 |         1 | Virat Kohli     |            250 |   33 | Batsman     | India        |
+|       1 |         2 | Rohit Sharma    |            240 |   34 | Batsman     | India        |
+|       1 |         3 | Jasprit Bumrah  |            150 |   28 | Bowler      | India        |
+|       2 |         4 | Steve Smith     |            230 |   32 | Batsman     | Australia    |
+|       2 |         5 | David Warner    |            220 |   35 | Batsman     | Australia    |
+|       3 |         7 | Joe Root        |            200 |   30 | Batsman     | England      |
+|       3 |         8 | Ben Stokes      |            180 |   30 | All-rounder | England      |
+|       3 |         9 | Jofra Archer    |            120 |   27 | Bowler      | England      |
+|       4 |        10 | Quinton de Kock |            220 |   29 | Batsman     | South Africa |
+|       4 |        11 | Kagiso Rabada   |            180 |   26 | Bowler      | South Africa |
+|       4 |        12 | Faf du Plessis  |            210 |   37 | Batsman     | South Africa |
+|       5 |        13 | Babar Azam      |            200 |   26 | Batsman     | Pakistan     |
+|       5 |        14 | Shaheen Afridi  |            130 |   21 | Bowler      | Pakistan     |
+|       5 |        15 | Mohammad Rizwan |            150 |   29 | Batsman     | Pakistan     |
++---------+-----------+-----------------+----------------+------+-------------+--------------+
+14 rows in set (0.00 sec)
+
+mysql>   UPDATE Stadium SET Capacity = Capacity + 5000 WHERE Stadium_name = 'Wankhede Stadium';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Stadium;
++-------------------------------------+----------+------------+--------------+------------------+
+| Stadium_name                        | Capacity | City       | Country      | Year_established |
++-------------------------------------+----------+------------+--------------+------------------+
+| Adelaide Oval                       |    53000 | Adelaide   | Australia    |             1871 |
+| Chinnaswamy Stadium                 |    38000 | Bangalore  | India        |             1969 |
+| Dubai International Cricket Stadium |    25000 | Dubai      | UAE          |             2009 |
+| Eden Gardens                        |    68000 | Kolkata    | India        |             1864 |
+| Gaddafi Stadium                     |    27000 | Lahore     | Pakistan     |             1959 |
+| Lord's Cricket Ground               |    30000 | London     | England      |             1814 |
+| Melbourne Cricket Ground            |   100000 | Melbourne  | Australia    |             1853 |
+| Newlands Cricket Ground             |    25000 | Cape Town  | South Africa |             1888 |
+| Old Trafford                        |    26000 | Manchester | England      |             1857 |
+| R. Premadasa Stadium                |    35000 | Colombo    | Sri Lanka    |             1986 |
+| Sharjah Cricket Stadium             |    16000 | Sharjah    | UAE          |             1982 |
+| SuperSport Park                     |    22000 | Centurion  | South Africa |             1986 |
+| Sydney Cricket Ground               |    48000 | Sydney     | Australia    |             1848 |
+| The Oval                            |    23500 | London     | England      |             1845 |
+| Wankhede Stadium                    |    38000 | Mumbai     | India        |             1974 |
++-------------------------------------+----------+------------+--------------+------------------+
+15 rows in set (0.00 sec)
+
+mysql>     SELECT Team_name, COUNT(*) AS Matches_won FROM Matches WHERE Winner = Team_name GROUP BY Team_name;
+ERROR 1054 (42S22): Unknown column 'Team_name' in 'field list'
+mysql> SELECT DISTINCT Country
+    -> FROM Players
+    -> WHERE (Total_runs / Matches_played) > 60;
+ERROR 1054 (42S22): Unknown column 'Total_runs' in 'where clause'
+mysql> SELECT Team_name, COUNT(*) AS Matches_won 
+    -> FROM Matches 
+    -> WHERE Winner = Team_name 
+    -> GROUP BY Team_name;
+ERROR 1054 (42S22): Unknown column 'Team_name' in 'field list'
+mysql> SELECT Winner AS Team_name, COUNT(*) AS Matches_won
+    -> FROM Matches
+    -> WHERE Winner IS NOT NULL  -- Ensure that Winner is not NULL
+    -> GROUP BY Winner;
++--------------+-------------+
+| Team_name    | Matches_won |
++--------------+-------------+
+| India        |           3 |
+| England      |           2 |
+| New Zealand  |           1 |
+| West Indies  |           1 |
+| Afghanistan  |           1 |
+| Ireland      |           1 |
+| Netherlands  |           1 |
+| Oman         |           1 |
+| South Africa |           2 |
+| Australia    |           1 |
+| Sri Lanka    |           1 |
++--------------+-------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT Player_name, Age, Role
+    -> FROM Players
+    -> WHERE Country = 'India';
++----------------+------+---------+
+| Player_name    | Age  | Role    |
++----------------+------+---------+
+| Virat Kohli    |   33 | Batsman |
+| Rohit Sharma   |   34 | Batsman |
+| Jasprit Bumrah |   28 | Bowler  |
++----------------+------+---------+
+3 rows in set (0.00 sec)
+
+mysql>  SELECT Player_name FROM Batsmen WHERE Total_runs > 5000;
+ERROR 1054 (42S22): Unknown column 'Player_name' in 'field list'
+mysql> 
+mysql> DELETE FROM Matches
+    -> WHERE Match_id = <match_id>;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '<match_id>' at line 2
+mysql> SELECT *
+    -> FROM Matches
+    -> WHERE Match_date > '2024-06-15';
++----------+--------------+--------------+------------+------------+-----------+-----------------------+--------------+
+| Match_id | Team_1_name  | Team_2_name  | Match_time | Match_date | Umpire_id | Stadium               | Winner       |
++----------+--------------+--------------+------------+------------+-----------+-----------------------+--------------+
+|        9 | India        | England      | 14:30:00   | 2024-06-17 |       109 | Eden Gardens          | India        |
+|       10 | Australia    | South Africa | 16:00:00   | 2024-06-19 |       110 | Sydney Cricket Ground | South Africa |
+|       11 | India        | West Indies  | 15:30:00   | 2024-06-21 |       111 | Wankhede Stadium      | India        |
+|       12 | Australia    | Pakistan     | 15:00:00   | 2024-06-23 |       112 | Adelaide Oval         | Australia    |
+|       13 | England      | New Zealand  | 14:30:00   | 2024-06-25 |       113 | Old Trafford          | England      |
+|       14 | Sri Lanka    | Bangladesh   | 16:00:00   | 2024-06-27 |       114 | R. Premadasa Stadium  | Sri Lanka    |
+|       15 | South Africa | Afghanistan  | 15:30:00   | 2024-06-29 |       115 | SuperSport Park       | South Africa |
++----------+--------------+--------------+------------+------------+-----------+-----------------------+--------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT Player_name, Highest_score
+    -> FROM Batsman
+    -> ORDER BY Highest_score DESC
+    -> LIMIT 1;
+ERROR 1146 (42S02): Table 'project1.batsman' doesn't exist
+mysql> 
